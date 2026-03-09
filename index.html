@@ -1,32 +1,40 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
-<head>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Quét mã QR</title>
 
-<meta charset="UTF-8">
-<title>Điểm danh QR</title>
+    <script src="https://unpkg.com/html5-qrcode"></script>
 
-<link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<script src="https://unpkg.com/html5-qrcode"></script>
+  <body>
+    <div class="container">
+      <h2 class="title">Quét mã QR</h2>
 
-</head>
+      <div id="notify" class="notify"></div>
 
-<body>
+      <button id="scanBtn" onclick="toggleScanner()" class="scanBtn">
+        Start Scan
+      </button>
 
-<h2>Quét mã QR</h2>
+      <div class="cameraBox">
+        <div id="reader"></div>
 
-<button id="scanBtn" onclick="toggleScanner()">Start Scan</button>
+        <div class="scan-frame">
+          <span class="corner tl"></span>
+          <span class="corner tr"></span>
+          <span class="corner bl"></span>
+          <span class="corner br"></span>
+        </div>
+      </div>
 
-<br><br>
+      <p class="count">Tổng số đã điểm danh: <b id="count">0</b></p>
 
-<div id="reader"></div>
+      <ul id="scanList"></ul>
+    </div>
 
-<p>Tổng số đã điểm danh: <b id="count">0</b></p>
-
-<h3>Danh sách</h3>
-<ul id="scanList"></ul>
-
-<script src="script.js"></script>
-
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>

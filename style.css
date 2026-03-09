@@ -1,9 +1,93 @@
-#reader{
-    width:320px;
-    margin:auto;
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #000;
+  color: white;
+  text-align: center;
 }
 
-button{
-    margin:5px;
-    padding:8px 12px;
+.container {
+  padding: 20px;
+}
+
+.title {
+  margin-bottom: 10px;
+}
+
+.scanBtn {
+  padding: 10px 20px;
+  border: none;
+  background: #f1c40f;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.cameraBox {
+  position: relative;
+  width: 320px;
+  margin: 20px auto;
+}
+
+#reader {
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.scan-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.corner {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border: 5px solid #ffd400;
+}
+
+.tl {
+  top: 10px;
+  left: 10px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.tr {
+  top: 10px;
+  right: 10px;
+  border-left: none;
+  border-bottom: none;
+}
+
+.bl {
+  bottom: 10px;
+  left: 10px;
+  border-right: none;
+  border-top: none;
+}
+
+.br {
+  bottom: 10px;
+  right: 10px;
+  border-left: none;
+  border-top: none;
+}
+
+.notify {
+  margin: 10px auto;
+  width: 300px;
+  background: #2ecc71;
+  padding: 10px;
+  border-radius: 6px;
+  display: none;
+}
+
+.count {
+  margin-top: 10px;
 }
