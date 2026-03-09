@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+
+<meta charset="UTF-8">
+<title>Điểm danh QR</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://unpkg.com/html5-qrcode"></script>
+
+</head>
+
+<body>
+
+<h2>Quét mã QR</h2>
+
+<button id="scanBtn" onclick="toggleScanner()">Start Scan</button>
+
+<br><br>
+
+<div id="reader"></div>
+
+<p>Tổng số đã điểm danh: <b id="count">0</b></p>
+
+<h3>Danh sách</h3>
+<ul id="scanList"></ul>
+
+<script src="script.js"></script>
+
+</body>
+</html>
