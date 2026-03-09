@@ -6,32 +6,21 @@ body {
   text-align: center;
 }
 
-.container {
-  padding: 20px;
-}
-
 .title {
-  margin-bottom: 10px;
+  padding: 10px;
+  font-size: 22px;
 }
 
-.scanBtn {
-  padding: 10px 20px;
-  border: none;
-  background: #f1c40f;
-  font-weight: bold;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.cameraBox {
+.cameraContainer {
   position: relative;
-  width: 320px;
-  margin: 20px auto;
+  width: 100%;
+  max-width: 400px;
+  margin: auto;
 }
 
 #reader {
   width: 100%;
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
 }
 
@@ -52,42 +41,73 @@ body {
 }
 
 .tl {
-  top: 10px;
-  left: 10px;
+  top: 20px;
+  left: 20px;
   border-right: none;
   border-bottom: none;
 }
 
 .tr {
-  top: 10px;
-  right: 10px;
+  top: 20px;
+  right: 20px;
   border-left: none;
   border-bottom: none;
 }
 
 .bl {
-  bottom: 10px;
-  left: 10px;
+  bottom: 20px;
+  left: 20px;
   border-right: none;
   border-top: none;
 }
 
 .br {
-  bottom: 10px;
-  right: 10px;
+  bottom: 20px;
+  right: 20px;
   border-left: none;
   border-top: none;
 }
 
-.notify {
-  margin: 10px auto;
-  width: 300px;
-  background: #2ecc71;
-  padding: 10px;
-  border-radius: 6px;
-  display: none;
+.scanBtn {
+  width: 90%;
+  max-width: 400px;
+  padding: 15px;
+  margin: 15px auto;
+  font-size: 18px;
+  font-weight: bold;
+  background: #ffd400;
+  border: none;
+  border-radius: 10px;
+  display: block;
 }
 
-.count {
-  margin-top: 10px;
+.notify {
+  margin: 10px auto;
+  width: 90%;
+  max-width: 400px;
+  background: #27ae60;
+  padding: 12px;
+  border-radius: 8px;
+  display: none;
+  font-size: 16px;
+}
+
+.info {
+  width: 90%;
+  max-width: 400px;
+  margin: auto;
+}
+
+#scanList {
+  text-align: left;
+  max-height: 200px;
+  overflow-y: auto;
+  background: #111;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+#scanList li {
+  padding: 5px 0;
+  border-bottom: 1px solid #333;
 }

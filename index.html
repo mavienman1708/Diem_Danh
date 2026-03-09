@@ -2,7 +2,9 @@
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
-    <title>Quét mã QR</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Điểm danh QR</title>
 
     <script src="https://unpkg.com/html5-qrcode"></script>
 
@@ -10,27 +12,27 @@
   </head>
 
   <body>
-    <div class="container">
-      <h2 class="title">Quét mã QR</h2>
+    <h2 class="title">Quét mã QR</h2>
 
-      <div id="notify" class="notify"></div>
+    <div id="notify" class="notify"></div>
 
-      <button id="scanBtn" onclick="toggleScanner()" class="scanBtn">
-        Start Scan
-      </button>
+    <div class="cameraContainer">
+      <div id="reader"></div>
 
-      <div class="cameraBox">
-        <div id="reader"></div>
-
-        <div class="scan-frame">
-          <span class="corner tl"></span>
-          <span class="corner tr"></span>
-          <span class="corner bl"></span>
-          <span class="corner br"></span>
-        </div>
+      <div class="scan-frame">
+        <span class="corner tl"></span>
+        <span class="corner tr"></span>
+        <span class="corner bl"></span>
+        <span class="corner br"></span>
       </div>
+    </div>
 
-      <p class="count">Tổng số đã điểm danh: <b id="count">0</b></p>
+    <button id="scanBtn" onclick="toggleScanner()" class="scanBtn">
+      Start Scan
+    </button>
+
+    <div class="info">
+      <p>Đã điểm danh: <b id="count">0</b></p>
 
       <ul id="scanList"></ul>
     </div>
