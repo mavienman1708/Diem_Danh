@@ -16,6 +16,99 @@
       href="https://fonts.googleapis.com/css2?family=Chiron+GoRound+TC:wght@200..900&display=swap"
       rel="stylesheet"
     />
+
+    <style>
+      /* ---------- SESSION BADGE ---------- */
+      .session-badge {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+      .session-badge.open {
+        background: #d4edda;
+        color: #155724;
+      }
+      .session-badge.closed {
+        background: #f8d7da;
+        color: #721c24;
+      }
+
+      /* ---------- OFF-HOUR BANNER ---------- */
+      .off-hour-banner {
+        background: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffc107;
+        border-radius: 10px;
+        padding: 12px 16px;
+        margin-bottom: 14px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        line-height: 1.6;
+        text-align: center;
+      }
+      .off-hour-banner small {
+        display: block;
+        font-weight: 400;
+        color: #6c5700;
+      }
+
+      /* ---------- TEST PANEL ---------- */
+      .test-panel {
+        position: fixed;
+        bottom: 16px;
+        right: 16px;
+        background: #1a1a2e;
+        color: #e2e2e2;
+        border-radius: 12px;
+        padding: 10px 14px;
+        z-index: 10000;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        min-width: 180px;
+      }
+      .test-panel-title {
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        color: #a78bfa;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+      }
+      .test-session-btns {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .test-btn {
+        padding: 5px 10px;
+        border-radius: 6px;
+        border: 1px solid #4a4a6a;
+        background: #2d2d4a;
+        color: #e2e2e2;
+        font-size: 0.78rem;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+      .test-btn:hover {
+        background: #3d3d6a;
+      }
+      .test-btn.active {
+        background: #7c3aed;
+        border-color: #7c3aed;
+        color: #fff;
+      }
+      .test-btn-real {
+        color: #f87171;
+        border-color: #6b3030;
+      }
+      .test-btn-real.active {
+        background: #991b1b;
+        border-color: #991b1b;
+        color: #fff;
+      }
+    </style>
   </head>
 
   <body>
@@ -23,6 +116,12 @@
     <h2 class="title">HỆ THỐNG ĐIỂM DANH QR</h2>
 
     <div id="notify" class="notify"></div>
+
+    <!-- Trạng thái ca học -->
+    <div id="sessionBadge" class="session-badge closed">🔴 Ngoài giờ</div>
+
+    <!-- Banner ngoài giờ (tự hiện/ẩn) -->
+    <div id="offHourBanner" class="off-hour-banner" style="display: none"></div>
 
     <div class="cameraContainer">
       <div id="reader"></div>
@@ -82,6 +181,13 @@
         <ul id="scanList"></ul>
       </div>
     </details>
+
+    <!-- Test Mode Panel (tự ẩn nếu TEST_MODE_ENABLED = false trong script.js) -->
+    <div id="testPanel" class="test-panel" style="display: none">
+      <div class="test-panel-title">🧪 Test Mode</div>
+      <div id="testSessionBtns" class="test-session-btns"></div>
+    </div>
+
     <script src="script.js"></script>
   </body>
 </html>
