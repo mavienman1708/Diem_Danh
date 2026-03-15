@@ -17,10 +17,7 @@ const sheetURL =
 // TEST MODE
 // ============================
 
-// Đặt thành true để bật panel test ở góc màn hình
 const TEST_MODE_ENABLED = true;
-
-// Biến lưu ca đang override (null = dùng giờ thật)
 let testSessionOverride = null;
 
 // ============================
@@ -29,8 +26,8 @@ let testSessionOverride = null;
 
 const SESSION_CONFIG = [
   {
-    id: "CN1",
-    label: "CN Ca 1",
+    id: "Thánh lễ Chúa Nhật (6h45-9h00)",
+    label: "TLCN",
     day: 0,
     startH: 6,
     startM: 45,
@@ -38,8 +35,8 @@ const SESSION_CONFIG = [
     endM: 0,
   },
   {
-    id: "CN2",
-    label: "CN Ca 2",
+    id: "Giáo Lý Chúa Nhật (9h15-10h45)",
+    label: "GLCN",
     day: 0,
     startH: 9,
     startM: 15,
@@ -47,27 +44,26 @@ const SESSION_CONFIG = [
     endM: 45,
   },
   {
-    id: "T3",
-    label: "Thứ 3",
+    id: "Giáo Lý Thứ 3 (17h30-19h30)",
+    label: "GLT3",
     day: 2,
     startH: 17,
     startM: 30,
     endH: 19,
-    endM: 0,
+    endM: 30,
   },
   {
-    id: "T5",
-    label: "Thứ 5",
+    id: "Thánh lễ Thứ 5 (17h30-19h30)",
+    label: "TLT5",
     day: 4,
     startH: 17,
     startM: 0,
     endH: 19,
-    endM: 0,
+    endM: 30,
   },
 ];
 
 function getCurrentSession() {
-  // Nếu test mode đang override → dùng luôn
   if (testSessionOverride) return testSessionOverride;
 
   const now = new Date();
@@ -94,7 +90,7 @@ let studentDB = {};
 
 const CACHE_KEY = "studentDB_cache";
 const CACHE_TIME_KEY = "studentDB_cache_time";
-const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 tiếng
+const CACHE_DURATION = 24 * 60 * 60 * 1000;
 
 async function loadStudentDB() {
   try {
@@ -129,6 +125,7 @@ async function loadStudentDB() {
         hoTen: s.hoTen,
         tenThanh: s.tenThanh,
         idName: tenThanh + s.hoTen,
+        lop: s.lop || "", // ← thêm lớp
       };
     });
 
@@ -158,21 +155,18 @@ function updateSessionStatus() {
   const sessionBadge = document.getElementById("sessionBadge");
 
   if (session) {
-    // Trong giờ → ẩn banner, mở UI
     if (banner) banner.style.display = "none";
 
     const cfg = SESSION_CONFIG.find((s) => s.id === session);
     const label = cfg ? cfg.label : session;
     if (sessionBadge) {
-      sessionBadge.textContent = "🟢 Ca " + label + " (" + session + ")";
+      sessionBadge.textContent = "🟢 Điểm danh " + session;
       sessionBadge.className = "session-badge open";
     }
 
     document.getElementById("scanBtn").disabled = false;
     document.getElementById("manualInput").disabled = false;
   } else {
-    // Ngoài giờ → hiện banner, khoá UI
-    // Dừng camera nếu đang chạy
     if (scanning && html5QrCode) {
       html5QrCode.stop().catch(() => {});
       scanning = false;
@@ -203,13 +197,12 @@ function getNextSessionInfo() {
   const day = now.getDay();
   const time = now.getHours() * 60 + now.getMinutes();
 
-  // Tìm ca tiếp theo trong tuần (tính từ hôm nay)
   for (let d = 0; d <= 7; d++) {
     const checkDay = (day + d) % 7;
     for (const s of SESSION_CONFIG) {
       if (s.day !== checkDay) continue;
       const startTime = s.startH * 60 + s.startM;
-      if (d === 0 && startTime <= time) continue; // đã qua hôm nay
+      if (d === 0 && startTime <= time) continue;
       const dayNames = [
         "CN",
         "Thứ 2",
@@ -239,7 +232,6 @@ function pad(n) {
   return n < 10 ? "0" + n : String(n);
 }
 
-// Cập nhật mỗi phút
 setInterval(updateSessionStatus, 60 * 1000);
 
 // ============================
@@ -253,7 +245,6 @@ function initTestPanel() {
   if (!panel) return;
   panel.style.display = "block";
 
-  // Tạo nút cho mỗi ca
   const btnContainer = document.getElementById("testSessionBtns");
   SESSION_CONFIG.forEach((s) => {
     const btn = document.createElement("button");
@@ -263,7 +254,6 @@ function initTestPanel() {
     btnContainer.appendChild(btn);
   });
 
-  // Nút "Giờ thật"
   const realBtn = document.createElement("button");
   realBtn.textContent = "Giờ thật";
   realBtn.className = "test-btn test-btn-real";
@@ -274,13 +264,11 @@ function initTestPanel() {
 function setTestSession(sessionID, clickedBtn) {
   testSessionOverride = sessionID;
 
-  // Reset màu tất cả nút test
   document
     .querySelectorAll(".test-btn")
     .forEach((b) => b.classList.remove("active"));
   if (clickedBtn) clickedBtn.classList.add("active");
 
-  // Reset danh sách khi đổi ca (tuỳ chọn — xoá nếu không muốn)
   if (sessionID !== null) {
     scannedStudents = {};
     document.getElementById("scanList").innerHTML = "";
@@ -330,9 +318,44 @@ function isValidQR(text) {
 // ============================
 
 function addToList(studentID, studentName) {
-  const li = document.createElement("li");
-  li.textContent = studentID + " | " + studentName;
-  document.getElementById("scanList").appendChild(li);
+  const s = studentDB[studentID];
+  const lop = s ? s.lop : "";
+  const stt = Object.keys(scannedStudents).length;
+
+  // Tạo table lần đầu nếu chưa có
+  let table = document.getElementById("scanTable");
+  if (!table) {
+    table = document.createElement("table");
+    table.id = "scanTable";
+    table.innerHTML =
+      "<thead><tr><th>#</th><th>ID</th><th>Họ và tên</th><th>Lớp</th><th></th></tr></thead>" +
+      "<tbody id='scanTableBody'></tbody>";
+    const scanList = document.getElementById("scanList");
+    scanList.parentNode.replaceChild(table, scanList);
+  }
+
+  const tbody = document.getElementById("scanTableBody");
+  const tr = document.createElement("tr");
+  tr.dataset.id = studentID;
+  tr.innerHTML =
+    "<td class='col-stt'>" +
+    stt +
+    "</td>" +
+    "<td class='col-id'>" +
+    studentID +
+    "</td>" +
+    "<td class='col-name'>" +
+    studentName +
+    "</td>" +
+    "<td class='col-lop'>" +
+    (lop || "—") +
+    "</td>" +
+    "<td class='col-del'><button class='del-btn' onclick='confirmDelete(\"" +
+    studentID +
+    '", "' +
+    studentName.replace(/"/g, "&quot;") +
+    "\")'>✕</button></td>";
+  tbody.appendChild(tr);
 
   const detailsDropdown = document.querySelector(".dropdown");
   if (detailsDropdown && detailsDropdown.open) {
@@ -343,15 +366,66 @@ function addToList(studentID, studentName) {
     Object.keys(scannedStudents).length;
 }
 
+function renumberTable() {
+  const rows = document.querySelectorAll("#scanTableBody tr");
+  rows.forEach((tr, i) => {
+    const sttCell = tr.querySelector(".col-stt");
+    if (sttCell) sttCell.textContent = i + 1;
+  });
+}
+
+// ============================
+// XÓA ĐIỂM DANH
+// ============================
+
+function confirmDelete(studentID, studentName) {
+  const confirmed = confirm(
+    "Xóa điểm danh của:\n" + studentName + " (" + studentID + ")?",
+  );
+  if (!confirmed) return;
+
+  // Xóa khỏi object
+  delete scannedStudents[studentID];
+
+  // Xóa row khỏi bảng
+  const tr = document.querySelector(
+    "#scanTableBody tr[data-id='" + studentID + "']",
+  );
+  if (tr) tr.remove();
+
+  // Cập nhật số thứ tự và count
+  renumberTable();
+  document.getElementById("count").textContent =
+    Object.keys(scannedStudents).length;
+
+  // Xóa trên Sheet
+  const session = getCurrentSession();
+  fetch(sheetURL, {
+    method: "POST",
+    body: JSON.stringify({ action: "delete", id: studentID, session }),
+  }).catch(() => console.log("Sheet delete error"));
+
+  showNotify("🗑️ Đã xóa điểm danh " + studentName);
+}
+
 // ============================
 // HÀM GỬI LÊN SHEET
 // ============================
 
 function postAttendance(studentID, studentName, session) {
   const grade = getGradeFromID(studentID);
+  const s = studentDB[studentID];
+  const lop = s ? s.lop : "";
+
   fetch(sheetURL, {
     method: "POST",
-    body: JSON.stringify({ id: studentID, name: studentName, grade, session }),
+    body: JSON.stringify({
+      id: studentID,
+      name: studentName,
+      grade,
+      session,
+      lop, // ← gửi lớp lên Sheet
+    }),
   }).catch(() => console.log("Sheet error"));
 }
 
@@ -510,7 +584,7 @@ function manualCheckin() {
 
   const cfg = SESSION_CONFIG.find((s) => s.id === session);
   const label = cfg ? cfg.label : session;
-  showNotify("✅ Điểm danh ca " + label + " thành công"); // ← BUG FIX
+  showNotify("✅ Điểm danh ca " + label + " thành công");
 
   postAttendance(foundID, foundName, session);
 }
@@ -544,7 +618,17 @@ function showSuggestions(value) {
 
   matches.forEach((m) => {
     const li = document.createElement("li");
-    li.textContent = m.id + " | " + m.idName;
+    li.className = "suggestion-item";
+    li.innerHTML =
+      "<span class='sug-id'>" +
+      m.id +
+      "</span>" +
+      "<span class='sug-name'>" +
+      m.idName +
+      "</span>" +
+      "<span class='sug-lop'>" +
+      (m.lop || "") +
+      "</span>";
     li.addEventListener("click", () => {
       document.getElementById("manualInput").value = m.id;
       list.innerHTML = "";

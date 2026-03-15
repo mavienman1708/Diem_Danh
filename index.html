@@ -108,6 +108,102 @@
         border-color: #991b1b;
         color: #fff;
       }
+      /* ---------- SCAN TABLE ---------- */
+      #scanTable {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.82rem;
+        margin-top: 6px;
+      }
+      #scanTable thead tr {
+        background: rgba(255, 255, 255, 0.08);
+      }
+      #scanTable th {
+        padding: 7px 8px;
+        text-align: left;
+        font-weight: 700;
+        color: #aaa;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        white-space: nowrap;
+      }
+      #scanTable td {
+        padding: 6px 8px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        vertical-align: middle;
+      }
+      #scanTable tbody tr:last-child td {
+        border-bottom: none;
+      }
+      #scanTable tbody tr:hover {
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .col-stt {
+        width: 28px;
+        text-align: center;
+        color: #888;
+      }
+      .col-id {
+        width: 52px;
+        white-space: nowrap;
+      }
+      .col-name {
+        /* chiếm phần còn lại */
+      }
+      .col-lop {
+        width: 56px;
+        white-space: nowrap;
+        color: #aaa;
+      }
+      .col-del {
+        width: 32px;
+        text-align: center;
+      }
+
+      .del-btn {
+        background: none;
+        border: none;
+        color: #e05555;
+        font-size: 0.8rem;
+        cursor: pointer;
+        padding: 2px 5px;
+        border-radius: 4px;
+        opacity: 0.5;
+        transition: opacity 0.15s;
+      }
+      .del-btn:hover {
+        opacity: 1;
+        background: rgba(224, 85, 85, 0.15);
+      }
+
+      /* ---------- SUGGESTIONS ---------- */
+      .suggestion-item {
+        display: grid;
+        grid-template-columns: 52px 1fr auto;
+        gap: 6px;
+        align-items: center;
+        padding: 8px 10px;
+        cursor: pointer;
+      }
+      .suggestion-item:hover {
+        background: rgba(255, 255, 255, 0.07);
+      }
+      .sug-id {
+        font-size: 0.75rem;
+        color: #888;
+        white-space: nowrap;
+      }
+      .sug-name {
+        font-size: 0.88rem;
+      }
+      .sug-lop {
+        font-size: 0.75rem;
+        color: #fff;
+        background: rgba(255, 255, 255, 0.12);
+        padding: 2px 7px;
+        border-radius: 10px;
+        white-space: nowrap;
+      }
     </style>
   </head>
 
