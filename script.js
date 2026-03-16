@@ -11,7 +11,7 @@ let scanLocked = false;
 
 // link Google Sheet Web App
 const sheetURL =
-  "https://script.google.com/macros/s/AKfycby9B1B3849FAPXPM1MDaVm1GcIrzTC0bMRm3HdsQ5CGCUWU_xnqrlOVG5maQF3IOoOoZw/exec";
+  "https://script.google.com/macros/s/AKfycbxQBIJVhf64r7LoAs2vOi4RxqHucQn_WTkNY_2Ay-80pyBQ2aJzgB0JlMU7gytLajBgSA/exec";
 
 // ============================
 // TEST MODE
